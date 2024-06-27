@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import messagebox
 import random
 
 # List of possible unique features or innovations
@@ -18,20 +20,45 @@ unique_features = [
     "developing autonomous robots for warehouse management"
 ]
 
-# Function to generate a project idea by user input
+# Function to generate a project idea based on user input
 def generate_project_idea(theme, project_type):
     unique_feature = random.choice(unique_features)
     return f"Build a {theme} {project_type} {unique_feature}"
 
-# Input part
-if __name__ == "__main__":
-    print("Welcome to the Interactive Hackathon Project Idea Generator!\n")
-    print("Please enter your preferences to generate a project idea.\n")
+# Function to handle button click event
+def generate_idea():
+    theme = theme_entry.get().strip()
+    project_type = project_type_entry.get().strip()
     
-    theme = input("Enter a theme or technology (e.g., Blockchain, AI and Machine Learning, IoT): ").strip()
-    project_type = input("Enter a project type (e.g., App, Platform, Game): ").strip()
-    
-    # Generate and print project idea 
-    idea = generate_project_idea(theme, project_type)
-    print("\nHere's your randomly generated project idea:")
-    print(idea)
+    if theme == "" or project_type == "":
+        messagebox.showerror("Error", "Please enter both a theme and a project type.")
+    else:
+        idea = generate_project_idea(theme, project_type)
+        idea_text.set(idea)
+
+# Create the main window
+root = tk.Tk()
+root.title("Hackathon Project Idea Generator")
+
+# Set window size
+root.geometry("800x400") 
+
+# Create labels and entry fields
+tk.Label(root, text="Theme or Technology:").pack()
+theme_entry = tk.Entry(root)
+theme_entry.pack()
+
+tk.Label(root, text="Project Type:").pack()
+project_type_entry = tk.Entry(root)
+project_type_entry.pack()
+
+tk.Button(root, text="Generate Idea", command=generate_idea).pack()
+
+# Label to display generated idea
+idea_text = tk.StringVar()
+idea_text.set("")
+tk.Label(root, text="Generated Idea:", font=("Arial", 18)).pack()
+tk.Label(root, textvariable=idea_text, wraplength=880, font=("Arial", 18)).pack()
+
+
+root.mainloop()
